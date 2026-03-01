@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getHotelById } from "@/lib/hotels";
 import { BookNowButton } from "@/components/BookNowButton";
+import { Header } from "@/components/Header";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -17,27 +18,12 @@ export default async function HotelDetailPage({ params }: Props) {
   const displayAmenities = hotel.amenities.slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
-      <header className="sticky top-0 z-10 border-b border-zinc-200 bg-white/95 backdrop-blur dark:border-zinc-700 dark:bg-zinc-900/95">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <Link
-            href="/"
-            className="text-xl font-bold text-emerald-600 dark:text-emerald-400"
-          >
-            StayFinder
-          </Link>
-          <Link
-            href="/"
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          >
-            ← Back to hotels
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[var(--background)]">
+      <Header backLink />
 
-      <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">
-        <article>
-          <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-xl bg-zinc-200 dark:bg-zinc-700">
+      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10">
+        <article className="overflow-hidden rounded-[var(--radius-xl)] border border-[var(--card-border)] bg-[var(--card)] shadow-[var(--shadow-lg)]">
+          <div className="relative aspect-video w-full overflow-hidden bg-[var(--surface)]">
             <Image
               src={hotel.image}
               alt={hotel.name}
@@ -46,40 +32,48 @@ export default async function HotelDetailPage({ params }: Props) {
               sizes="(max-width: 1024px) 100vw, 896px"
               priority
             />
-            <div className="absolute bottom-3 right-3 flex items-center gap-0.5 rounded-md bg-black/60 px-2 py-1 text-sm font-medium text-white">
-              <span aria-hidden>★</span>
-              <span>{hotel.starRating} Star</span>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" aria-hidden />
+            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+              <span className="rounded-lg bg-black/50 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
+                {hotel.location}
+              </span>
+              <div className="flex items-center gap-1 rounded-lg bg-black/50 px-3 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
+                <span aria-hidden>★</span>
+                <span>{hotel.starRating} Star</span>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-6 sm:gap-8">
-            <div>
-              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+          <div className="p-6 sm:p-8">
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl">
                 {hotel.name}
               </h1>
-              <p className="mt-1 text-zinc-500 dark:text-zinc-400">
-                {hotel.location}
-              </p>
-              <p className="mt-2 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-                ${hotel.pricePerNight}
-                <span className="text-base font-normal text-zinc-500 dark:text-zinc-400">
-                  {" "}
-                  per night
+              <p className="mt-1 text-[var(--muted)]">{hotel.location}</p>
+              <div className="mt-3 flex items-baseline gap-2">
+                <span className="text-2xl font-bold text-[var(--foreground)]">
+                  ${hotel.pricePerNight}
                 </span>
-              </p>
+                <span className="text-[var(--muted)]">per night</span>
+              </div>
             </div>
 
-            <p className="text-zinc-600 dark:text-zinc-300">{hotel.description}</p>
+            <p className="text-[var(--muted)] leading-relaxed">
+              {hotel.description}
+            </p>
 
-            <section aria-labelledby="amenities-heading">
-              <h2 id="amenities-heading" className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+            <section className="mt-8" aria-labelledby="amenities-heading">
+              <h2
+                id="amenities-heading"
+                className="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]"
+              >
                 Amenities
               </h2>
-              <ul className="mt-2 flex flex-wrap gap-2" role="list">
+              <ul className="mt-3 flex flex-wrap gap-2" role="list">
                 {displayAmenities.map((amenity) => (
                   <li
                     key={amenity}
-                    className="rounded-lg bg-zinc-200 px-3 py-2 text-sm font-medium text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200"
+                    className="rounded-xl border border-[var(--card-border)] bg-[var(--surface)] px-4 py-2.5 text-sm font-medium text-[var(--foreground)]"
                   >
                     {amenity}
                   </li>
@@ -87,7 +81,7 @@ export default async function HotelDetailPage({ params }: Props) {
               </ul>
             </section>
 
-            <div className="pt-2">
+            <div className="mt-8 pt-6 border-t border-[var(--card-border)]">
               <BookNowButton />
             </div>
           </div>

@@ -6,33 +6,38 @@ export function HotelCard({ hotel }: { hotel: Hotel }) {
   return (
     <Link
       href={`/hotels/${hotel.id}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-zinc-600"
+      className="group flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-[var(--card-border)] bg-[var(--card)] shadow-[var(--shadow)] transition-all duration-300 hover:border-[var(--muted)]/50 hover:shadow-[var(--shadow-xl)]"
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-700">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--surface)]">
         <Image
           src={hotel.thumbnail}
           alt={hotel.name}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-        <div className="absolute right-2 top-2 flex items-center gap-0.5 rounded-md bg-black/60 px-2 py-1 text-sm font-medium text-white">
-          <span aria-hidden>★</span>
-          <span>{hotel.starRating}</span>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden />
+        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+          <span className="rounded-lg bg-black/60 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-white/90 backdrop-blur-sm">
+            {hotel.city}
+          </span>
+          <div className="flex items-center gap-1 rounded-lg bg-black/60 px-2.5 py-1 text-sm font-medium text-white backdrop-blur-sm">
+            <span aria-hidden>★</span>
+            <span>{hotel.starRating}</span>
+          </div>
         </div>
       </div>
-      <div className="flex flex-1 flex-col p-4">
-        <h2 className="font-semibold text-zinc-900 dark:text-zinc-100">
+      <div className="flex flex-1 flex-col p-5">
+        <h2 className="font-semibold leading-tight text-[var(--foreground)] transition-colors group-hover:text-[var(--muted)]">
           {hotel.name}
         </h2>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">{hotel.city}</p>
-        <p className="mt-auto pt-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-          ${hotel.pricePerNight}
-          <span className="text-sm font-normal text-zinc-500 dark:text-zinc-400">
-            {" "}
-            / night
+        <p className="mt-1 text-sm text-[var(--muted)]">{hotel.city}</p>
+        <div className="mt-4 flex items-baseline gap-1 border-t border-[var(--card-border)] pt-4">
+          <span className="text-2xl font-bold tracking-tight text-[var(--foreground)]">
+            ${hotel.pricePerNight}
           </span>
-        </p>
+          <span className="text-sm text-[var(--muted)]">/ night</span>
+        </div>
       </div>
     </Link>
   );
